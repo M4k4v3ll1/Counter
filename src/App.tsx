@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import {Counter} from "./components/counter/Counter";
+import {SuperButton} from "./components/supperButton/SuperButton";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const STARTVALUE = 0
+    const MAXVALUE = 5
+
+    const [count, setCount] = useState<number>(STARTVALUE)
+
+    const increaseCounter = () => {
+        if (count < MAXVALUE) {
+            let newCount = count + 1
+            setCount(newCount)
+        }
+    }
+
+    const resetCounter = () => {
+        setCount(STARTVALUE)
+    }
+
+    const isIncBtnDisabled = count === MAXVALUE
+    const isResBtnDisabled = count === STARTVALUE
+
+    return (
+        <div className="App">
+            <Counter count={count} MAXVALUE={MAXVALUE}/>
+            {/*<Buttons count={count} increaseCounter={increaseCounter} resetCounter={resetCounter}/>*/}
+            <SuperButton name='inc' onClickHandler={increaseCounter} isDisabled={isIncBtnDisabled}/>
+            <SuperButton name='reset' onClickHandler={resetCounter} isDisabled={isResBtnDisabled}/>
+        </div>
+    );
 }
 
 export default App;
