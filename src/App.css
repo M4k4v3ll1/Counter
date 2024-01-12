@@ -1,27 +1,24 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.body {
+    height: 100%;
+    width: 100%
+}
+
 .App {
-    width: 80px;
     display: flex;
+    gap: 10px;
+    align-items: center;
     justify-content: center;
-    text-align: center;
-    flex-wrap: wrap;
-    align-content: space-between;
+    height: 100vh;
 }
 
-.counter {
-    padding-top: 25px;
-    width: 100px;
-    height: 50px;
-    border: 1px solid blue;
-}
-
-.button {
-    justify-content: space-around;
-    gap: 20px;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-.maxValue {
-    color: red;
-    font-size: 40px;
+.btn-area {
+    border: 1px black solid;
 }

@@ -1,14 +1,34 @@
 import React, {FC} from 'react';
+import {Display} from "./display/Display";
+import {SuperButton} from "./supperButton/SuperButton";
+import s from './Counter.module.css'
 
-type PropsType = {
+type CounterPropsType = {
     count: number
-    MAXVALUE: number
+    maxValue: number
+    increaseCounter: () => void
+    resetCounter: () => void
+    isIncBtnDisabled: boolean
+    isResBtnDisabled: boolean
 }
-
-export const Counter: FC<PropsType> = ({count, MAXVALUE}) => {
+const Counter: FC<CounterPropsType> = (
+    {
+        count,
+        maxValue,
+        increaseCounter,
+        resetCounter,
+        isIncBtnDisabled,
+        isResBtnDisabled
+    }) => {
     return (
-        <div className='counter'>
-            <div className={count === MAXVALUE ? 'maxValue' : ''}>{count}</div>
+        <div className={s.counter}>
+            <Display count={count} maxValue={maxValue}/>
+            <div className={s.btn_area}>
+                <SuperButton name='inc' onClickHandler={increaseCounter} isDisabled={isIncBtnDisabled}/>
+                <SuperButton name='reset' onClickHandler={resetCounter} isDisabled={isResBtnDisabled}/>
+            </div>
         </div>
     );
 };
+
+export default Counter;

@@ -1,0 +1,11 @@
+.button {
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid lightskyblue;
+    border-radius: 5px;
+    font-size: 50px;
+    font-weight: bold;
+    width: 150px;
+    background-color: lightskyblue;
+}

@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Counter} from "./components/counter/Counter";
-import {SuperButton} from "./components/supperButton/SuperButton";
+import Counter from "./components/counter/Counter";
+import {Settings} from "./components/settings/Settings";
+
 
 function App() {
     const STARTVALUE = 0
     const MAXVALUE = 5
+
+    const [startValue, setStartValue] = useState(0)
+    const [maxValue, setMaxValue] = useState(1)
+
+    const increaseStartValue = () => {
+
+    }
 
     const [count, setCount] = useState<number>(STARTVALUE)
 
@@ -25,10 +33,17 @@ function App() {
 
     return (
         <div className="App">
-            <Counter count={count} MAXVALUE={MAXVALUE}/>
-            {/*<Buttons count={count} increaseCounter={increaseCounter} resetCounter={resetCounter}/>*/}
-            <SuperButton name='inc' onClickHandler={increaseCounter} isDisabled={isIncBtnDisabled}/>
-            <SuperButton name='reset' onClickHandler={resetCounter} isDisabled={isResBtnDisabled}/>
+            <Settings
+
+            />
+            <Counter
+                count={count}
+                maxValue={MAXVALUE}
+                increaseCounter={increaseCounter}
+                resetCounter={resetCounter}
+                isIncBtnDisabled={isIncBtnDisabled}
+                isResBtnDisabled={isResBtnDisabled}
+            />
         </div>
     );
 }
