@@ -3,15 +3,19 @@ import s from './SuperButton.module.css'
 
 type SuperButtonPropsType = {
     name: string
-    onClickHandler: () => void
+    callback: () => void
     isDisabled: boolean
 }
 
-export const SuperButton: FC<SuperButtonPropsType> = ({name, onClickHandler, isDisabled}) => {
+export const SuperButton: FC<SuperButtonPropsType> = ({name, callback, isDisabled}) => {
+    const finalClassName = s.button
+        + (isDisabled
+            ? ' ' + s.disabled
+            : '')
     return (
         <button
-            className={s.button}
-            onClick={onClickHandler}
+            className={finalClassName}
+            onClick={callback}
             disabled={isDisabled}
         >{name}</button>
     );

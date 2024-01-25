@@ -1,44 +1,39 @@
 import React, {useState} from 'react';
 import './App.css';
 import Counter from "./components/counter/Counter";
-import {Settings} from "./components/settings/Settings";
+import {ErrorType, Settings} from "./components/settings/Settings";
 
 
 function App() {
-    const STARTVALUE = 0
-    const MAXVALUE = 5
+    const [startValue, setStartValue] = useState<number>(0)
+    const [endValue, setEndValue] = useState<number>(5)
 
-    const [startValue, setStartValue] = useState(0)
-    const [maxValue, setMaxValue] = useState(1)
-
-    const increaseStartValue = () => {
-
-    }
-
-    const [count, setCount] = useState<number>(STARTVALUE)
+    const [displayValue, setDisplayValue] = useState<ErrorType>(startValue)
 
     const increaseCounter = () => {
-        if (count < MAXVALUE) {
-            let newCount = count + 1
-            setCount(newCount)
+        if (typeof(displayValue) === 'number' && displayValue < endValue) {
+            let newCount = displayValue + 1
+            setDisplayValue(newCount)
         }
     }
 
     const resetCounter = () => {
-        setCount(STARTVALUE)
+        setDisplayValue(startValue)
     }
 
-    const isIncBtnDisabled = count === MAXVALUE
-    const isResBtnDisabled = count === STARTVALUE
+    const isIncBtnDisabled = typeof(displayValue) === 'string' || displayValue === endValue
+    const isResBtnDisabled = typeof(displayValue) === 'string' || displayValue === startValue
 
     return (
         <div className="App">
             <Settings
-
+                setStartValue={setStartValue}
+                setEndValue={setEndValue}
+                setDisplayValue={setDisplayValue}
             />
             <Counter
-                count={count}
-                maxValue={MAXVALUE}
+                count={displayValue}
+                maxValue={endValue}
                 increaseCounter={increaseCounter}
                 resetCounter={resetCounter}
                 isIncBtnDisabled={isIncBtnDisabled}

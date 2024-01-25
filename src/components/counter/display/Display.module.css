@@ -1,4 +1,4 @@
-.display {
+.normalValue {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
     font-weight: bold;
 }
 
-.maxValue {
+.limitValue {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,8 +19,33 @@
     height: 200px;
     border: 1px solid lightskyblue;
     border-radius: 5px;
-    background-color: #ee5959;
     font-size: 70px;
     font-weight: bold;
     color: red
+}
+
+.incorrectValue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+    border: 1px solid lightskyblue;
+    border-radius: 5px;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.setValue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+    border: 1px solid lightskyblue;
+    border-radius: 5px;
+    color: lightskyblue;
+    font-size: 20px;
+    font-weight: bold;
 }

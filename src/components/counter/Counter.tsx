@@ -2,9 +2,10 @@ import React, {FC} from 'react';
 import {Display} from "./display/Display";
 import {SuperButton} from "./supperButton/SuperButton";
 import s from './Counter.module.css'
+import {ErrorType} from "../settings/Settings";
 
 type CounterPropsType = {
-    count: number
+    count: ErrorType
     maxValue: number
     increaseCounter: () => void
     resetCounter: () => void
@@ -24,8 +25,8 @@ const Counter: FC<CounterPropsType> = (
         <div className={s.counter}>
             <Display count={count} maxValue={maxValue}/>
             <div className={s.btn_area}>
-                <SuperButton name='inc' onClickHandler={increaseCounter} isDisabled={isIncBtnDisabled}/>
-                <SuperButton name='reset' onClickHandler={resetCounter} isDisabled={isResBtnDisabled}/>
+                <SuperButton name='inc' callback={increaseCounter} isDisabled={isIncBtnDisabled}/>
+                <SuperButton name='reset' callback={resetCounter} isDisabled={isResBtnDisabled}/>
             </div>
         </div>
     );

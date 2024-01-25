@@ -8,4 +8,14 @@
     font-weight: bold;
     width: 150px;
     background-color: lightskyblue;
+    cursor: pointer;
+}
+
+.button:active {
+    background-color: #2a2a36;
+    color: lightskyblue;
+}
+
+.button:disabled {
+    opacity: 0.5;
 }
