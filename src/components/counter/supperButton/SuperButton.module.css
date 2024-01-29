@@ -1,12 +1,13 @@
 .button {
-    justify-content: space-between;
+    display: flex;
+    justify-content: center;
     align-items: center;
     gap: 20px;
     border: 1px solid lightskyblue;
     border-radius: 5px;
     font-size: 50px;
     font-weight: bold;
-    width: 150px;
+    width: 500px;
     background-color: lightskyblue;
     cursor: pointer;
 }
@@ -14,6 +15,7 @@
 .button:active {
     background-color: #2a2a36;
     color: lightskyblue;
+    justify-content: center;
 }
 
 .button:disabled {

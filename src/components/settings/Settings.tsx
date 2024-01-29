@@ -1,11 +1,14 @@
 import React, {ChangeEvent, FC, useState} from "react";
 import s from './Settings.module.css'
 import {SuperButton} from "../counter/supperButton/SuperButton";
+import {CounterVersionType} from "../../App";
 
 type SettingsPropsType = {
     setStartValue: (startValue: number) => void
     setEndValue: (endValue: number) => void
     setDisplayValue: (SetStateAction: ErrorType) => void
+    CounterVersion: CounterVersionType
+    setCounterVersion: (SetStateAction: CounterVersionType) => void
 }
 
 export type ErrorType = `Enter values and press 'set'` | 'Incorrect value!' | number
@@ -14,7 +17,9 @@ export const Settings: FC<SettingsPropsType> = (
     {
         setStartValue,
         setEndValue,
-        setDisplayValue
+        setDisplayValue,
+        CounterVersion,
+        setCounterVersion
     }) => {
     const [maxValue, setMaxValue] = useState<number>(1)
     const [minValue, setMinValue] = useState<number>(0)
@@ -23,10 +28,12 @@ export const Settings: FC<SettingsPropsType> = (
     const onClickMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const maxV = parseInt(e.currentTarget.value);
         setMaxValue(maxV);
+
         if (maxV > 0 && minValue < maxV && minValue >= 0) {
             setError(`Enter values and press 'set'`)
             errorHandler(`Enter values and press 'set'`)
             setDisplayValue(`Enter values and press 'set'`)
+
         } else {
             setError('Incorrect value!')
             errorHandler('Incorrect value!')
@@ -41,6 +48,7 @@ export const Settings: FC<SettingsPropsType> = (
             setError(`Enter values and press 'set'`)
             errorHandler(`Enter values and press 'set'`)
             setDisplayValue(`Enter values and press 'set'`)
+            localStorage.setItem('minValue', JSON.stringify(minV))
         } else {
             setError('Incorrect value!')
             errorHandler('Incorrect value!')
@@ -55,11 +63,14 @@ export const Settings: FC<SettingsPropsType> = (
         setIsDisabled(isDisabled)
     }
 
-    const onClicksHandler = () => {
+    const onClickHandler = () => {
         setStartValue(minValue)
         setEndValue(maxValue)
         setDisplayValue(minValue)
         setIsDisabled(true)
+        if (CounterVersion === '1 display settings') {
+            setCounterVersion('1 display')
+        }
     }
 
     const onFocusHandler = () => {
@@ -93,7 +104,7 @@ export const Settings: FC<SettingsPropsType> = (
             <div className={s.btn_area}>
                 <SuperButton
                     name={'set'}
-                    callback={onClicksHandler}
+                    callback={onClickHandler}
                     isDisabled={isDisabled}
                 />
             </div>
