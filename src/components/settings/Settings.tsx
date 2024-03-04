@@ -2,6 +2,8 @@ import React, {ChangeEvent, FC, useState} from "react";
 import s from './Settings.module.css'
 import {SuperButton} from "../counter/supperButton/SuperButton";
 import {CounterVersionType} from "../../App";
+import {Input} from "../input/Input";
+import {useDispatch} from "react-redux";
 
 type SettingsPropsType = {
     setStartValue: (startValue: number) => void
@@ -21,11 +23,12 @@ export const Settings: FC<SettingsPropsType> = (
         CounterVersion,
         setCounterVersion
     }) => {
+    const dispatch = useDispatch()
     const [maxValue, setMaxValue] = useState<number>(1)
     const [minValue, setMinValue] = useState<number>(0)
     const [error, setError] = useState<ErrorType>(0)
 
-    const onClickMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onClickMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         const maxV = parseInt(e.currentTarget.value);
         setMaxValue(maxV);
 
@@ -41,7 +44,7 @@ export const Settings: FC<SettingsPropsType> = (
         }
     }
 
-    const onClickMinValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onClickMinValue = (e: ChangeEvent<HTMLInputElement>) => {
         const minV = parseInt(e.currentTarget.value);
         setMinValue(minV);
         if (minV >= 0 && minV < maxValue && maxValue >= 1) {
@@ -82,23 +85,11 @@ export const Settings: FC<SettingsPropsType> = (
             <div className={s.settingsDisplay}>
                 <div className={s.row}>
                     <div>max value:</div>
-                    <input
-                        className={error === 'Incorrect value!' ? s.errorInput : s.input}
-                        type='number'
-                        step="1"
-                        onChange={onClickMaxValueHandler}
-                        onFocus={onFocusHandler}
-                    />
+                    <Input error={error} onClickCallback={onClickMaxValue} onFocusCallback={onFocusHandler}/>
                 </div>
                 <div className={s.row}>
                     <div>start value:</div>
-                    <input
-                        className={error === 'Incorrect value!' ? s.errorInput : s.input}
-                        type='number'
-                        step="1"
-                        onChange={onClickMinValueHandler}
-                        onFocus={onFocusHandler}
-                    />
+                    <Input error={error} onClickCallback={onClickMinValue} onFocusCallback={onFocusHandler}/>
                 </div>
             </div>
             <div className={s.btn_area}>
@@ -111,3 +102,4 @@ export const Settings: FC<SettingsPropsType> = (
         </div>
     )
 }
+
