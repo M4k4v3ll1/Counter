@@ -23,19 +23,17 @@
 
 .header {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
     width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .header h1 {
     display: flex;
     justify-content: center;
     width: 100%;
-
 }
 
-.btn-area {
-    border: 1px black solid;
+.btn {
+    scale: 35%;
 }

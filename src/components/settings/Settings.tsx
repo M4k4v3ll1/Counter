@@ -1,95 +1,96 @@
-import React, {ChangeEvent, FC, useState} from "react";
+import React, {ChangeEvent, FC, useCallback, useState} from "react";
 import s from './Settings.module.css'
 import {SuperButton} from "../counter/supperButton/SuperButton";
-import {CounterVersionType} from "../../App";
 import {Input} from "../input/Input";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "../../state/store";
+import {setCountValueAC, setMaxValueAC, setMinValueAC} from "../../state/reducers/changeValueReducer";
+import {CounterVersionType, ErrorType, setErrorAC, setOneDisplayAC} from "../../state/reducers/changeDisplayReducer";
 
-type SettingsPropsType = {
-    setStartValue: (startValue: number) => void
-    setEndValue: (endValue: number) => void
-    setDisplayValue: (SetStateAction: ErrorType) => void
-    CounterVersion: CounterVersionType
-    setCounterVersion: (SetStateAction: CounterVersionType) => void
-}
+type SettingsPropsType = {}
 
-export type ErrorType = `Enter values and press 'set'` | 'Incorrect value!' | number
-
-export const Settings: FC<SettingsPropsType> = (
-    {
-        setStartValue,
-        setEndValue,
-        setDisplayValue,
-        CounterVersion,
-        setCounterVersion
-    }) => {
+export const Settings: FC<SettingsPropsType> = () => {
+    const minV = useSelector<AppRootState, number>(state => state.value.minValue)
+    const maxV = useSelector<AppRootState, number>(state => state.value.maxValue)
+    const error = useSelector<AppRootState, ErrorType>(state => state.error.error)
+    const [maxValue, setMaxValue] = useState<number>(maxV)
+    const [minValue, setMinValue] = useState<number>(minV)
+    const displayVersion = useSelector<AppRootState, CounterVersionType>(state => state.error.displayVersion)
+    const [isDisabled, setIsDisabled] = useState<boolean>(true)
     const dispatch = useDispatch()
-    const [maxValue, setMaxValue] = useState<number>(1)
-    const [minValue, setMinValue] = useState<number>(0)
-    const [error, setError] = useState<ErrorType>(0)
 
-    const onClickMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const onClickMaxValue = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const maxV = parseInt(e.currentTarget.value);
-        setMaxValue(maxV);
-
-        if (maxV > 0 && minValue < maxV && minValue >= 0) {
-            setError(`Enter values and press 'set'`)
-            errorHandler(`Enter values and press 'set'`)
-            setDisplayValue(`Enter values and press 'set'`)
-
-        } else {
-            setError('Incorrect value!')
-            errorHandler('Incorrect value!')
-            setDisplayValue('Incorrect value!')
+        setMaxValue(maxV)
+        if (maxV > 0 && minValue < maxV && minValue >= 0 && maxV < 10000000) {
+            dispatch(setErrorAC(`Enter values and press 'set'`))
+            setIsDisabled(false)
+        } else if (minValue < 0) {
+            dispatch(setErrorAC('start value is less than 0'))
+            setIsDisabled(true)
+        } else if (maxV < minValue) {
+            dispatch(setErrorAC('start value is greater than end value!'))
+            setIsDisabled(true)
+        } else if (maxV === minValue) {
+            dispatch(setErrorAC('values are equal!'))
+            setIsDisabled(true)
         }
-    }
-
-    const onClickMinValue = (e: ChangeEvent<HTMLInputElement>) => {
+    }, [minValue])
+    const onClickMinValue = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
         const minV = parseInt(e.currentTarget.value);
-        setMinValue(minV);
+        setMinValue(minV)
         if (minV >= 0 && minV < maxValue && maxValue >= 1) {
-            setError(`Enter values and press 'set'`)
-            errorHandler(`Enter values and press 'set'`)
-            setDisplayValue(`Enter values and press 'set'`)
-            localStorage.setItem('minValue', JSON.stringify(minV))
-        } else {
-            setError('Incorrect value!')
-            errorHandler('Incorrect value!')
-            setDisplayValue('Incorrect value!')
+            dispatch(setErrorAC(`Enter values and press 'set'`))
+            setIsDisabled(false)
+        } else if (minV < 0) {
+            dispatch(setErrorAC('start value is less than 0'))
+            setIsDisabled(true)
+        } else if (maxValue < minV) {
+            dispatch(setErrorAC('start value is greater than end value!'))
+            setIsDisabled(true)
+        } else if (maxValue === minV) {
+            dispatch(setErrorAC('values are equal!'))
+            setIsDisabled(true)
         }
-    }
-
-    let [isDisabled, setIsDisabled] = useState<boolean>(true)
-
-    const errorHandler = (error: ErrorType) => {
-        isDisabled = error === ('Incorrect value!' || `Set new counter's values` || null)
-        setIsDisabled(isDisabled)
-    }
-
-    const onClickHandler = () => {
-        setStartValue(minValue)
-        setEndValue(maxValue)
-        setDisplayValue(minValue)
+    }, [maxValue])
+    const onClickHandler = useCallback(() => {
+        dispatch(setMaxValueAC(maxValue));
+        dispatch(setMinValueAC(minValue));
+        dispatch(setErrorAC(''))
+        dispatch(setCountValueAC(minValue))
         setIsDisabled(true)
-        if (CounterVersion === '1 display settings') {
-            setCounterVersion('1 display')
+        if (displayVersion === '1 display settings') {
+            dispatch(setOneDisplayAC())
         }
-    }
+    }, [minValue, maxValue])
 
-    const onFocusHandler = () => {
-        setIsDisabled(true)
+    let minInputClassName = s.input
+    let maxInputClassName = s.input
+    switch (error) {
+        case 'start value is less than 0':
+            minInputClassName = s.errorInput
+            break
+        case 'values are equal!':
+            minInputClassName = s.errorInput
+            maxInputClassName = s.errorInput
+            break
+        case 'start value is greater than end value!':
+            minInputClassName = s.errorInput
+            maxInputClassName = s.errorInput
+            break
+        default:
+            break
     }
-
     return (
         <div className={s.settings}>
             <div className={s.settingsDisplay}>
                 <div className={s.row}>
                     <div>max value:</div>
-                    <Input error={error} onClickCallback={onClickMaxValue} onFocusCallback={onFocusHandler}/>
+                    <Input value={maxValue} onClickCallback={onClickMaxValue} finalClassName={maxInputClassName}/>
                 </div>
                 <div className={s.row}>
                     <div>start value:</div>
-                    <Input error={error} onClickCallback={onClickMinValue} onFocusCallback={onFocusHandler}/>
+                    <Input value={minValue} onClickCallback={onClickMinValue} finalClassName={minInputClassName}/>
                 </div>
             </div>
             <div className={s.btn_area}>

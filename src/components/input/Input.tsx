@@ -1,30 +1,26 @@
-import React, {ChangeEvent, FC} from "react";
-import s from "../settings/Settings.module.css";
-import {ErrorType} from "../settings/Settings";
+import React, {ChangeEvent, FC, memo} from "react";
+
 
 type InputPropsType = {
-    error: ErrorType
+    value: number
     onClickCallback: (e: ChangeEvent<HTMLInputElement>) => void
-    onFocusCallback: () => void
+    finalClassName: string
 }
-export const Input: FC<InputPropsType> = ({
-                                              error,
+export const Input: FC<InputPropsType> = memo(({
+                                              value,
                                               onClickCallback,
-                                              onFocusCallback
+                                              finalClassName
                                           }) => {
-
     const onClickGetValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         onClickCallback(e)
     }
-    const onFocusHandler = () => {
-        onFocusCallback()
-    }
-    return (
-        <input
-            className={error === 'Incorrect value!' ? s.errorInput : s.input}
-            type='number'
-            onChange={onClickGetValueHandler}
-            onFocus={onFocusHandler}
-        />
-    )
-}
+
+        return (
+            <input
+                className={finalClassName}
+                type='number'
+                onChange={onClickGetValueHandler}
+                value={value}
+            />
+        )
+})

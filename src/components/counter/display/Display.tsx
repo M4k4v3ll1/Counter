@@ -1,58 +1,26 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import s from './Display.module.css'
-import {ErrorType} from "../../settings/Settings";
+import {useSelector} from "react-redux";
+import {AppRootState} from "../../../state/store";
 
 type DisplayPropsType = {
-    minValue: number
-    maxValue: number
+    showedValue: number | string
 }
 
-export const Display: FC<DisplayPropsType> = ({minValue, maxValue}) => {
+export const Display: FC<DisplayPropsType> = memo(({showedValue}) => {
+    const endValue = useSelector<AppRootState, number>(state => state.value.endValue)
+    let finalClassname =
+        typeof (showedValue) === 'number'
+            ? showedValue === endValue
+                ? s.limitValue
+                : s.normalValue
+            : showedValue === `Enter values and press 'set'`
+                ? s.setValue
+                : s.incorrectValue
 
-    // if (typeof count === 'number') {
-    //     return count === maxValue
-    //         ? s.limitValue
-    //         : s.normalValue
-    // } else {
-    //     return count === `Incorrect value!`
-    //         ? s.incorrectValue
-    //         : s.setValue
-    // }
     return (
-        <div
-            //className={
-        //     typeof (count) === 'number'
-        //         ? count === maxValue
-        //             ? s.limitValue
-        //             : s.normalValue
-        //         : count === `Incorrect value!`
-        //             ? s.incorrectValue
-        //             : s.setValue
-        // }
-            >
-            <span>{minValue}</span>
+        <div className={finalClassname}>
+            <span>{showedValue}</span>
         </div>
     );
-};
-
-
-//From New Display
-// import React, {FC} from 'react';
-// import s from './Display.module.css'
-//
-// type DisplayPropsType = {
-//     count: number
-//     endValue: number
-// }
-//
-// export const Display: FC<DisplayPropsType> = ({count, endValue}) => {
-//     let finalClassname = count === endValue
-//         ? s.limitValue
-//         : s.normalValue
-//
-//     return (
-//         <div className={finalClassname}>
-//             <span>{count}</span>
-//         </div>
-//     );
-// };
+});

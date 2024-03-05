@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import s from './SuperButton.module.css'
 
 type SuperButtonPropsType = {
@@ -7,7 +7,7 @@ type SuperButtonPropsType = {
     isDisabled: boolean
 }
 
-export const SuperButton: FC<SuperButtonPropsType> = ({name, callback, isDisabled}) => {
+export const SuperButton: FC<SuperButtonPropsType> = memo(({name, callback, isDisabled}) => {
     const finalClassName = s.button
         + (isDisabled
             ? ' ' + s.disabled
@@ -19,4 +19,4 @@ export const SuperButton: FC<SuperButtonPropsType> = ({name, callback, isDisable
             disabled={isDisabled}
         >{name}</button>
     );
-};
+});
